@@ -17,7 +17,7 @@ const TodoList = () => {
             const newArray = previeus.filter(element => element !== needParam)
             return [...newArray];
         })
-    }
+    }    
        
     return (
         <div className="container">
@@ -42,7 +42,12 @@ const TodoList = () => {
                 </ul>
                 <p>{need.length} {need.length > 1 ? "items left" : "item left"}</p>                
             </div>
-            <button type="button" className="btn btn-secondary">Delete All</button>
+            <button 
+                type="button" 
+                className="btn btn-secondary"
+                onClick={() => {setNeed([])}}>
+                    Delete All
+            </button>
         </div>
     )
 }
