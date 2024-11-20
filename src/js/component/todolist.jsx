@@ -26,18 +26,23 @@ const TodoList = () => {
                 <input className="input" type="text" placeholder="What needs to be done? " onKeyDown={handleOnChange} />
                 <ul>
                     {
-                        need.map((needParam) => (
-                        <li key={needParam}>
-                            {needParam}
-                            <button
-                                className="delete"
-                                onClick={() => {deleteNeed(needParam);}}
-                            ><i className="fa-solid fa-x" /></button>
-                        </li>                        
-                    ))}
+                        need.map((needParam) => {
+                        return(
+                            <li key={needParam}>
+                                {needParam}
+                                <button
+                                    className="delete"
+                                    onClick={() => {deleteNeed(needParam);}}
+                                >
+                                    <i className="fa-solid fa-x" />
+                                </button>
+                            </li>   
+                        )                     
+                    })}
                 </ul>
-                <p>{need.length} {need.length > 1 ? "items left" : "item left"}</p>
+                <p>{need.length} {need.length > 1 ? "items left" : "item left"}</p>                
             </div>
+            <button type="button" className="btn btn-secondary">Delete All</button>
         </div>
     )
 }
