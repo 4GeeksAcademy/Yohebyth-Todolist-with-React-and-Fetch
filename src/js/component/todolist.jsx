@@ -1,7 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const TodoList = () => {
     const [need, setNeed] = useState([]);
+
+    const getData  = async () => {
+        const response = await fetch('https://playground.4geeks.com/todo/users/Yohebyth');
+        if (response.ok) {
+            const responseJson = await response.json();
+            const serverNeeds = responseJson.todos;
+            setNeed(serverNeeds);
+        } else {
+            console.log('error: ', response.status, response.statusText);
+            return {error: {status: response.status, statusText: response.statusText}};
+        };
+    };
+
+    useEffect(()=>{        
+        getData()
+    },[]);
+
     const handleOnChange = (e) => {
         if (e.key === "Enter") {        
             const yaExiste = need.find(needParam => needParam === e.target.value.trim())
@@ -27,18 +44,19 @@ const TodoList = () => {
                 <ul>
                     {
                         need.map((needParam) => {
-                        return(
-                            <li key={needParam}>
-                                {needParam}
-                                <button
-                                    className="delete"
-                                    onClick={() => {deleteNeed(needParam);}}
-                                >
-                                    <i className="fa-solid fa-x" />
-                                </button>
-                            </li>   
-                        )                     
-                    })}
+                            return(
+                                <li key={needParam.id}>
+                                    {needParam.label}
+                                    <button
+                                        className="delete"
+                                        onClick={() => {deleteNeed(needParam);}}
+                                    >
+                                        <i className="fa-solid fa-x" />
+                                    </button>
+                                </li>   
+                            )
+                        })
+                    }
                 </ul>
                 <p>{need.length} {need.length > 1 ? "items left" : "item left"}</p>                
             </div>
