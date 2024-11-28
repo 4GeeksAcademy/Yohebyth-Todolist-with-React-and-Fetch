@@ -19,12 +19,29 @@ const TodoList = () => {
         getData()
     },[]);
 
+    const postNeed = async(needParam) => {
+        await fetch('https://playground.4geeks.com/todo/todos/Yohebyth', {
+            method: 'POST',
+            body: JSON.stringify ({
+                "label": needParam,
+                "is_done": false
+            }),
+            headers: {
+                'content-type': 'application/json' 
+            }
+        })
+        .then(resp => resp.json())
+        .then(respJson => {           
+            const newNeeds =[...need, respJson];
+            setNeed([...newNeeds])
+        });
+    }
+
     const handleOnChange = (e) => {
         if (e.key === "Enter") {        
-            const yaExiste = need.find(needParam => needParam === e.target.value.trim())
-            console.log(yaExiste);   
+            const yaExiste = need.find(needParam => needParam === e.target.value.trim())  
             if (e.target.value.trim() !== "" && yaExiste === undefined) {
-                setNeed([...need, e.target.value.trim()]);
+                postNeed(e.target.value.trim());
                 e.target.value = "";
             } else alert("The field cannot be empty, nor can the value be repeated.");
         }
