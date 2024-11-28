@@ -4,15 +4,12 @@ const TodoList = () => {
     const [need, setNeed] = useState([]);
 
     const getData  = async () => {
-        const response = await fetch('https://playground.4geeks.com/todo/users/Yohebyth');
-        if (response.ok) {
-            const responseJson = await response.json();
-            const serverNeeds = responseJson.todos;
+        await fetch('https://playground.4geeks.com/todo/users/Yohebyth')
+        .then(resp => resp.json())
+        .then(respJson =>{
+            const serverNeeds = respJson.todos;
             setNeed(serverNeeds);
-        } else {
-            console.log('error: ', response.status, response.statusText);
-            return {error: {status: response.status, statusText: response.statusText}};
-        };
+        })
     };
 
     useEffect(()=>{        
