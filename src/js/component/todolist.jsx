@@ -3,13 +3,28 @@ import React, { useState, useEffect } from "react";
 const TodoList = () => {
     const [need, setNeed] = useState([]);
 
-    const getData  = async () => {
-        await fetch('https://playground.4geeks.com/todo/users/Yohebyth')
-        .then(resp => resp.json())
-        .then(respJson =>{
-            const serverNeeds = respJson.todos;
-            setNeed(serverNeeds);
+    const postUser = async() =>{
+        await fetch('https://playground.4geeks.com/todo/users/Yohebyth', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json' 
+            }
         })
+        getData();
+    };
+    
+    const getData  = async () => {
+        const resp = await fetch('https://playground.4geeks.com/todo/users/Yohebyth')
+        if(resp.ok){
+            console.log('Usuario existe');
+            const respJson = await resp.json();
+            const serverNeeds = respJson.todos;
+            setNeed(serverNeeds);            
+        }
+        else{
+            console.log('usuario no existe');           
+            postUser(); 
+        }
     };
 
     useEffect(()=>{        
@@ -32,7 +47,7 @@ const TodoList = () => {
             const newNeeds =[...need, respJson];
             setNeed([...newNeeds])
         });
-    }
+    };
 
     const handleOnChange = (e) => {
         if (e.key === "Enter") {        
@@ -42,13 +57,19 @@ const TodoList = () => {
                 e.target.value = "";
             } else alert("The field cannot be empty, nor can the value be repeated.");
         }
-    }
+    };
     const deleteNeed = (needParam) =>{
+         fetch(`https://playground.4geeks.com/todo/todos/${needParam.id}`, {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json' 
+            }
+        })
         setNeed((previeus) => {
             const newArray = previeus.filter(element => element !== needParam)
             return [...newArray];
         })
-    }    
+    };    
        
     return (
         <div className="container">
