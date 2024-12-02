@@ -50,12 +50,11 @@ const TodoList = () => {
     };
 
     const handleOnChange = (e) => {
-        if (e.key === "Enter") {        
-            const yaExiste = need.find(needParam => needParam === e.target.value.trim())  
-            if (e.target.value.trim() !== "" && yaExiste === undefined) {
+        if (e.key === "Enter") {
+            if (e.target.value.trim() !== "") {
                 postNeed(e.target.value.trim());
                 e.target.value = "";
-            } else alert("The field cannot be empty, nor can the value be repeated.");
+            } else alert("The field cannot be empty");
         }
     };
     const deleteNeed = (needParam) =>{
@@ -69,7 +68,18 @@ const TodoList = () => {
             const newArray = previeus.filter(element => element !== needParam)
             return [...newArray];
         })
-    };    
+    };  
+    
+    const deleteUser = () =>{
+        fetch(`https://playground.4geeks.com/todo/users/Yohebyth`, {
+           method: 'DELETE',
+           headers: {
+               'content-type': 'application/json' 
+           }
+       })
+       setNeed([]);
+       postUser();
+   };   
        
     return (
         <div className="container">
@@ -98,8 +108,12 @@ const TodoList = () => {
             <button 
                 type="button" 
                 className="btn btn-success"
-                onClick={() => {setNeed([])}}>
-                    Delete All
+                onClick={() => {
+                    deleteUser();
+                    }
+                }
+            >
+                Delete All
             </button>
         </div>
     )
